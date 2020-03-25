@@ -2,24 +2,27 @@ import React, { Component } from "react";
 
 class Quote extends Component {
     state = {
-        quote: "Chuck Norris aint shhhh"
+        quote: "Fetching quote....."
     };
 
-    componentDidMount() {
-        setTimeout(() => {
+    async componentDidMount() {
+        try {
+            const response = await fetch('https://api.chucknorris.io/jokes/random?category=dev');
+            const data = await response.json();
             this.setState({
-                quote: "Chuck is meaner than a junkyard dawg"
-            });
-        }, 2000);
+                quote: data.value
+            })
+        }   catch (error) {
+            this.setState({
+                quote: error.message
+            })
+        }
+        
     }
-
 
   render() {
     const { quote } = this.state;
-    return (
-        <p>{quote}</p>
-    
-    );
+    return  <p>{quote}</p>;
   }
 }
 
